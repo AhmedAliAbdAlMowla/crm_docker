@@ -1,0 +1,1141 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "url": "http://localhost:5000/api/v1/",
+      "description": "Devlopment server (uses test data)",
+      "variables": {}
+    },
+    {
+      "url": "http://13.126.233.224/api/v1/",
+      "description": "Production server (uses live data)",
+      "variables": {},
+      "basePath": ""
+    }
+  ],
+  "info": {
+    "version": "v1",
+    "title": "CRM API",
+    "description": "This api was developed  by eng : Ahmed Ali  ✌️✌️ ,for protoqit company, @copyright protoqit 2021",
+    "termsOfService": "",
+    "contact": {},
+    "license": { "name": "" }
+  },
+
+  "tags": [
+    {
+      "name": "User",
+      "description": "Everything about  User"
+    },
+    {
+      "name": "Admin",
+      "description":"Everything about  Admin"
+    },
+    {
+      "name": "Super Admin",
+      "description":"Everything about  Super Admin"
+    },
+    {
+      "name": "Project",
+      "description":"Everything about  Project"
+    },
+    {
+      "name": "Milestone",
+      "description":"Everything about  Milestone"
+    },
+    {
+      "name": "Folder",
+      "description":"Everything about  Folder"
+    },
+    {
+      "name": "File",
+      "description":"Everything about  File"
+    },
+    {
+      "name": "Admin-client-project",
+      "description":"Everything about  Admin-client-project"
+    },
+    {
+      "name": "Admin-client-milestone",
+      "description":"Everything about  Admin-client-milestone"
+    },
+    {
+      "name": "Admin-client-folder",
+      "description":"Everything about Admin-client-folder"
+    },
+    {
+      "name": "Admin-client-file",
+      "description":"Everything about  Admin-client-folder"
+    }
+  ],
+  "paths": {
+          "/users/login": {
+            "post": {
+              "summary": " login",
+              "operationId": "login",
+              "description": "you can use this end point to  login",
+              "parameters": [],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "example": {
+                        "email": "ahmedabdalmola2017@gmail.com",
+                        "password": "#Ahmed123"
+                      }
+                    },
+                    "example": "{\r\n    \"email\":\"ahmedabdalmola2017@gmail.com\",\r\n    \"password\": \"#Ahmed123\"\r\n}"
+                  }
+                }
+              },
+              "tags": ["User"]
+            }
+          },
+          "/users/signup": {
+            "post": {
+              "summary": "signup",
+              "operationId": "signup",
+              "description": "you can use this end point to  signup",
+              "parameters": [],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "example": {
+                        "firstName": "roman",
+                        "lastName": "protoqit",
+                        "email": "roman@protoqit.com",
+                        "phoneNumber": "+1235665689566",
+                        "password": "#Secret123"
+        
+                      }
+                    },
+                    "example": "{\r\n\r\n    \"firstName\":\"roman\",\r\n    \"lastName\":\"protoqit\",\r\n    \"email\":\"roman@protoqit.com\",\r\n   \n    \"password\":\"#Secret123\"\r\n\r\n}"
+                  }
+                }
+              },
+              "tags": ["User"]
+            }
+          },
+          "/users/profile": {
+            "get": {
+              "summary": "get user profile data",
+              "description": "you can use this end point to  get user profile data",
+              "operationId": "getuserdata",
+              "responses": { "200": { "description": "", "headers": {} } },
+              "tags": ["User"]
+            },
+            "patch": {
+              "summary": "Update user data",
+              "operationId": "update",
+              "description": "you can use this end point to  update user profile data",
+              "responses": { "200": { "description": "", "headers": {} } },
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "example": {
+                        "phoneNumber": "0100041473612",
+                        "lastName": "aaaa"
+                      }
+                    },
+                    "example": "{\r\n     \"phoneNumber\": \"0100041473612\",\r\n    \"lastName\":\"aaaa\"\r\n  \r\n \r\n    \r\n}"
+                  }
+                }
+              },
+              "tags": ["User"]
+            }
+          },
+         
+          "/users/profile/image":{
+            "post": {
+              "summary": "upload user profile image",
+              "operationId": "",
+             
+              "responses": { "200": { "description": "", "headers": {} } },
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "multipart/form-data": {
+                    "schema": {
+                      "type": "object",
+                      "required": ["file"],
+                     
+                      "properties": {
+                        "file": {
+                          "type": "string",
+                          "format": "base64"
+                        }
+                      }
+                    }
+              
+                  }
+                }
+              },
+              "tags": ["User"]
+            },
+            "get": {
+              "summary": "get user profile image link",
+              "description": "you can use this end point to  get user profile image link",
+              "operationId": "get user profile image",
+              "responses": { "200": { "description": "", "headers": {} } },
+              "tags": ["User"]
+            }
+          },
+          "/users/account/password": {
+            "patch": {
+              "summary": "update password",
+              "operationId": "update password",
+              "description": "you can use this end point to  update password , you should have a old password and new password",
+              "responses": { "200": { "description": "", "headers": {} } },
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "example": {
+                        "password": "#Ahmed888",
+                        "newPassword": "#Ahmed97"
+                      }
+                    },
+                    "example": "{\r\n    \"password\":\"#Ahmed888\",\r\n    \"newPassword\":\"#Ahmed97\"\r\n}"
+                  }
+                }
+              },
+              "tags": ["User"]
+            }
+          },
+          "/users/account/recover": {
+            "post": {
+              "summary": "Accunt  recover ",
+              "operationId": "recover",
+              "description": "you can use this end point to  recover accunt by give the email and send tokent to email",
+              "parameters": [],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "example": { "email": "ahmedshekh@student.aast.edu" }
+                    },
+                    "example": "{\r\n    \"email\":\"ahmedshekh@student.aast.edu\"\r\n}"
+                  }
+                }
+              },
+              "tags": ["User"]
+            }
+          },
+          "/users/account/token/check": {
+            "post": {
+              "summary": "Check token is valid or not valid",
+              "operationId": "checkToken",
+              "description": "you can use this end point to  check if the token is valid or not valid",
+              "parameters": [],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": { "type": "object", "example": { "token": "d4a1ec" } },
+                    "example": "{\r\n    \"token\":\"d4a1ec\"\r\n}"
+                  }
+                }
+              },
+              "tags": ["User"]
+            }
+          },
+          "/users/account/password/reset": { 
+            "post": {
+              "summary": "Reset password",
+              "operationId": "resetPassword",
+              "description": "you can use this end point to  reset password , you should have a tokent to confirm this operation ",
+              "parameters": [],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "example": { "token": "f9a81d", "password": "#Ahmed97" }
+                    },
+                    "example": "{\r\n    \"token\":\"f9a81d\",\r\n    \"password\": \"#Ahmed97\"\r\n}"
+                  }
+                }
+              },
+              "tags": ["User"]
+            }
+          },
+        
+
+
+          "/admin": {
+            "get": {
+              "summary": "getAllAdmin",
+              "operationId": "getAllAdmin",
+              "parameters": [
+                {
+                  "name": "pageNumber",
+                  "in": "query",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "number" }
+                },
+                {
+                  "name": "pageSize",
+                  "in": "query",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "number" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "tags": ["Admin"]
+            }
+          },
+          "/admin/clients": {
+            "get": {
+              "summary": "get All Client",
+              "operationId": "getAllClient",
+              "parameters": [
+                {
+                  "name": "pageNumber",
+                  "in": "query",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "number" }
+                },
+                {
+                  "name": "pageSize",
+                  "in": "query",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "number" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "tags": ["Admin"]
+            }
+          },
+          "/admin/client/{clientId}": {
+            "get": {
+              "summary": "Get client profile data",
+              "operationId": "Get client profile data",
+              "parameters": [
+                {
+                  "name": "clientId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+             
+              "tags": ["Admin"]
+            }
+          },
+          "/admin/client/profile/{clientId}": {
+            "patch": {
+              "summary": "updateClientProfile",
+              "operationId": "updateClientProfile",
+              "parameters": [
+                {
+                  "name": "clientId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "example": { "phoneNumber": "01000414736", "lastName": "aaaa" }
+                    },
+                    "example": "{\r\n     \"phoneNumber\": \"01000414736\",\r\n    \"lastName\":\"aaaa\"\r\n   \r\n \r\n    \r\n}"
+                  }
+                }
+              },
+              "tags": ["Admin"]
+            }
+          },
+        
+
+
+          "/admin/client/file/{folderId}": {
+            "get": {
+              "summary": "admin-client-get-AllFile",
+              "operationId": "admin-client-get-AllFile",
+              "description": "you can use this end point to get all file in folder you shoud have folder id",
+              "parameters": [
+                { "$ref": "#/components/parameters/pageNumber" },
+                { "$ref": "#/components/parameters/pageSize" },
+
+                {
+                  "name": "folderId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "tags": ["Admin-client-file"]
+            },
+            "post": {
+              "summary": "admin-client-upload-file",
+              "operationId": "admin-client-upload-file",
+              "parameters": [
+                {
+                  "name": "folderId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "multipart/form-data": {
+                    "schema": {
+                      "type": "object",
+                      "required": ["file"],
+                      "properties": {
+                        "file": { "type": "string", "format": "base64" }
+                      }
+                    },
+                    "example": [
+                      { "key": "file", "type": "file", "src": "/E:/file2.jpg" }
+                    ]
+                  }
+                }
+              },
+              "tags": ["Admin-client-file"]
+            }
+          },
+          "/admin/client/file/{fileId}": {
+            "patch": {
+              "summary": "admin-client-update-file",
+              "operationId": "admin-client-update-file",
+              "parameters": [
+                {
+                  "name": "fileId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "example": { "fileName": "glasses" }
+                    },
+                    "example": "{\r\n    \"fileName\": \"glasses\"\r\n}"
+                  }
+                }
+              },
+              "tags": ["Admin-client-file"]
+            }
+          },
+          "/admin/client/folder/{clientId}": {
+            "get": {
+              "summary": "get client all folder",
+              "operationId": "getclientallfolder",
+              "parameters": [
+                {
+                  "name": "pageNumber",
+                  "in": "query",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "number" }
+                },
+                {
+                  "name": "pageSize",
+                  "in": "query",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "number" }
+                },
+                {
+                  "name": "clientId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "tags": ["Admin-client-folder"]
+            },
+            "post": {
+              "summary": "admin-client-creat-folder",
+              "operationId": "admin-client-creat-folder",
+              "parameters": [
+                {
+                  "name": "clientId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "example": { "folderName": "pdfs" }
+                    },
+                    "example": "{\r\n    \"folderName\":\"pdfs\"\r\n}"
+                  }
+                }
+              },
+              "tags": ["Admin-client-folder"]
+            }
+          },
+          "/admin/client/folder/{folderId}": {
+            "patch": {
+              "summary": "admin-client-update-folder",
+              "operationId": "admin-client-update-folder",
+              "parameters": [
+                {
+                  "name": "folderId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "example": { "folderName": "clean" }
+                    },
+                    "example": "{\r\n    \"folderName\":\"clean\"\r\n}"
+                  }
+                }
+              },
+              "tags": ["Admin-client-folder"]
+            }
+          },
+          "/admin/client/project/{clientId}": {
+            "get": {
+              "summary": "getAll",
+              "operationId": "getAll",
+              "parameters": [
+                {
+                  "name": "pageNumber",
+                  "in": "query",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "number" }
+                },
+                {
+                  "name": "pageSize",
+                  "in": "query",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "number" }
+                },
+                {
+                  "name": "clientId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "tags": ["Admin-client-project"]
+            },
+            "post": {
+              "summary": "create",
+              "operationId": "create",
+              "responses": { "200": { "description": "", "headers": {} } },
+              "parameters": [
+                {
+                  "name": "clientId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "example": {
+                        "name": "tow",
+                        "streetAddress": "newstrr",
+                        "city": "corfalsona",
+                        "state": "cal",
+                        "zip": "122354"
+                      }
+                    },
+                    "example": "{\r\n    \"name\": \"tow\",\r\n     \"streetAddress\":\"newstrr\",\r\n    \"city\": \"corfalsona\",\r\n    \"state\":\"cal\",\r\n    \"zip\": \"122354\"\r\n}"
+                  }
+                }
+              },
+              "tags": ["Admin-client-project"]
+            }
+          },
+          "/admin/client/project/{projectId}": {
+            "delete": {
+              "summary": "admin-client-delete-project",
+              "operationId": "admin-client-delete-project",
+              "parameters": [
+                {
+                  "name": "projectId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "tags": ["Admin-client-project"]
+            }
+          },
+          "/admin/client/milestone/{projectId}": {
+            "get": {
+              "summary": "getAll",
+              "operationId": "getAll0",
+              "parameters": [
+                {
+                  "name": "pageNumber",
+                  "in": "query",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "number" }
+                },
+                {
+                  "name": "pageSize",
+                  "in": "query",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "number" }
+                },
+
+                {
+                  "name": "projectId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "tags": ["Admin-client-milestone"]
+            },
+            "post": {
+              "summary": "create",
+              "operationId": "create1",
+              "parameters": [
+                {
+                  "name": "projectId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "example": { "name": "three", "description": "ae" }
+                    },
+                    "example": "{\r\n    \"name\":\"three\",\r\n    \"description\":\"ae\"\r\n}"
+                  }
+                }
+              },
+              "tags": ["Admin-client-milestone"]
+            }
+          },
+          "/admin/client/milestone/{milestoneId}": {
+            "patch": {
+              "summary": "update",
+              "operationId": "update2",
+              "parameters": [
+                {
+                  "name": "milestoneId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": { "type": "object", "example": { "status": "1" } },
+                    "example": "{\r\n    \"status\":\"1\"\r\n}"
+                  }
+                }
+              },
+              "tags": ["Admin-client-milestone"]
+            },
+            "delete": {
+              "summary": "admin-client-delete-milestone",
+              "operationId": "admin-client-delete-milestone",
+              "parameters": [
+                {
+                  "name": "milestoneId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "tags": ["Admin-client-milestone"]
+            }
+          },
+
+
+
+  
+
+
+
+
+          "/super/user/{userId}": {
+            "delete": {
+              "summary": "delete user",
+              "operationId": "deleteuser",
+              "parameters": [
+                {
+                  "name": "userId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "tags": ["Super Admin"]
+            }
+          },
+          "/super/client/folder/{folderId}": {
+            "delete": {
+              "summary": "admin-client-delete-folder",
+              "operationId": "admin-client-delete-folder",
+
+              "parameters": [
+                {
+                  "name": "folderId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "tags": ["Super Admin"]
+            }
+          },
+          "/super/client/file/{fileId}": {
+            "delete": {
+              "summary": "admin-client-delete-file",
+              "operationId": "admin-client-delete-file",
+              "parameters": [
+             
+                {
+                  "name": "fileId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "tags": ["Super Admin"]
+            }
+          },
+          "/super/user/profile/{userId}": {
+            "patch": {
+              "summary": "update UserProfile",
+              "operationId": "updateUserProfile",
+              "parameters": [
+                {
+                  "name": "userId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "example": {
+                        "phoneNumber": "01000414736",
+                        "lastName": "aaaa",
+                        "role": "addmin"
+                      }
+                    },
+                    "example": "{\r\n     \"phoneNumber\": \"01000414736\",\r\n    \"lastName\":\"aaaa\",\r\n    \"role\":\"addmin\"\r\n   \r\n   \r\n \r\n    \r\n}"
+                  }
+                }
+              },
+              "tags": ["Super Admin"]
+            },
+            "get": {
+              "summary": "get  User Profile Data",
+              "operationId": "get user profile data",
+              "parameters": [
+                {
+                  "name": "userId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+            
+              "tags": ["Super Admin"]
+            }
+          },
+
+
+          "/client/folder": {
+            "get": {
+              "summary": "get all folders",
+              "operationId": "getallfolders",
+              "parameters": [
+                {
+                  "name": "pageNumber",
+                  "in": "query",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "number" }
+                },
+                {
+                  "name": "pageSize",
+                  "in": "query",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "number" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "tags": ["Folder"]
+            },
+            "post": {
+              "summary": "create folder",
+              "operationId": "createfolder",
+
+              "responses": { "200": { "description": "", "headers": {} } },
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": { "type": "object", "example": { "folderName": "a" } },
+                    "example": "{\r\n    \"folderName\":\"a\"\r\n}"
+                  }
+                }
+              },
+              "tags": ["Folder"]
+            }
+          },
+          "/client/folder/{folderId}": {
+            "delete": {
+              "summary": "Delete folder",
+              "operationId": "Deletefolder",
+              "parameters": [
+                {
+                  "name": "folderId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "tags": ["Folder"]
+            },
+            "patch": {
+              "summary": "update folder",
+              "operationId": "updatefolder",
+              "parameters": [
+                {
+                  "name": "folderId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "example": { "folderName": "images" }
+                    },
+                    "example": "{\r\n    \"folderName\":\"images\"\r\n}"
+                  }
+                }
+              },
+              "tags": ["Folder"]
+            }
+          },
+
+
+          "/client/file/{folderId}": {
+            "get": {
+              "summary": "getAllFile",
+              "operationId": "getAllFile",
+              "parameters": [
+                {
+                  "name": "pageNumber",
+                  "in": "query",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "number" }
+                },
+                {
+                  "name": "pageSize",
+                  "in": "query",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "number" }
+                },
+                {
+                  "name": "folderId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "tags": ["File"]
+            }
+            ,"post": {
+              "summary": "upload File",
+              "operationId": "uploadFile",
+              "parameters": [
+                {
+                  "name": "folderId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "multipart/form-data": {
+                    "schema": {
+                      "type": "object",
+                      "required": ["file"],
+                      "properties": {
+                        "file": { "type": "string", "format": "base64" }
+                      }
+                    }
+                   
+                  }
+                }
+              },
+              "tags": ["File"]
+            }
+
+          },
+          "/client/file/{fileId}": {
+
+            "delete": {
+              "summary": "Delete file",
+              "operationId": "Deletefile",
+              "parameters": [
+                {
+                  "name": "fileId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "tags": ["File"]
+            },
+            "patch": {
+              "summary": "update file",
+              "operationId": "updatefile",
+              "parameters": [
+                {
+                  "name": "fileId",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "example": { "fileName": "glasses" }
+                    },
+                    "example": "{\r\n    \"fileName\": \"glasses\"\r\n}"
+                  }
+                }
+              },
+              "tags": ["File"]
+            }
+          },
+
+          "/client/project": {
+            "get": {
+              "summary": "getAll",
+              "operationId": "getAll0",
+              "parameters": [
+                {
+                  "name": "pageNumber",
+                  "in": "query",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "number" }
+                },
+                {
+                  "name": "pageSize",
+                  "in": "query",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "number" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "tags": ["Project"]
+            }
+          },
+          "/client/milestone/{projectID}": {
+            "get": {
+              "summary": "getAll",
+              "operationId": "getAll0",
+              "parameters": [
+                {
+                  "name": "pageNumber",
+                  "in": "query",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "number" }
+                },
+                {
+                  "name": "pageSize",
+                  "in": "query",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "number" }
+                },
+
+                {
+                  "name": "projectID",
+                  "in": "path",
+                  "required": true,
+                  "style": "form",
+                  "schema": { "type": "string" }
+                }
+              ],
+              "responses": { "200": { "description": "", "headers": {} } },
+              "tags": ["Milestone"]
+            }
+          }
+  },
+  "components": {
+        "parameters": {
+          "x-auth-token": {
+            "name": "x-auth-token",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "pageNumber": {
+            "name": "pageNumber",
+            "in": "query",
+            "required": true,
+            "style": "form",
+            "schema": { "type": "number" }
+          },
+          "pageSize": {
+            "name": "pageSize",
+            "in": "query",
+            "required": true,
+            "style": "form",
+            "schema": { "type": "number" }
+          },
+          "": {
+            "name": "",
+            "in": "query",
+            "required": true,
+            "style": "form",
+            "schema": { "type": "number" }
+          }
+        },
+        "securitySchemes": {
+          "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "x-auth-token",
+            "scheme": "bearer",
+            "description": "Enter JWT token",
+            "in": "header"
+          }
+        }
+      },
+      "security": [{ "ApiKeyAuth": [] }],
+
+      "externalDocs": { "url": "", "description": "" },
+      "warnings": []
+}
