@@ -1,17 +1,17 @@
-"use strict"
+"use strict";
 exports.queryList = {
-
   //                                             ACCUNT
   GET_ALL_ACCOUNT: `SELECT * FROM account`,
   GET_ACCOUNT_BY_EMAIL: `SELECT user_id FROM account WHERE email = $1`,
+  // GET_ACCOUNT_BY_USER_ID: `SELECT user_id FROM account WHERE user_id = $1`,
   CREATE_ACCOUNT: `INSERT INTO  account(first_name ,last_name ,password ,email , phone_number ,role ,created_at)
-  VALUES($1,$2,$3,$4,$5,'client',CURRENT_TIMESTAMP);`,
+  VALUES($1,$2,$3,$4,$5,'client',CURRENT_TIMESTAMP) RETURNING user_id;`,
   CHECK_EMAIL_IS_EXIST: `SELECT COUNT(*) FROM account WHERE email = $1`,
   GET_DATA_FOR_LOGIN: `SELECT user_id,first_name,last_name,role,password FROM account WHERE email = $1`,
   GET_ACCOUNT_DATA: `SELECT user_id,first_name,last_name,role FROM account WHERE user_id = $1`,
   GET_ACCOUNT_PASSWORD: `SELECT password FROM account WHERE user_id= $1`,
   UPDATE_ACCOUNT_PASSWORD: `UPDATE account SET password = $1  WHERE user_id=$2`,
-  
+
   UPDATE_ACCOUNT_DATA: (id, table, cols) => {
     let query = ["UPDATE " + table];
     query.push("SET");
@@ -24,22 +24,21 @@ exports.queryList = {
     return query.join(" ");
   },
   //                                          ACCUNT PROFILE IMAGE
-   GET_ACCOUNT_PROFILE_IMAGE:`SELECT link,s3_key FROM profile_image WHERE user_id =$1`,
-   CREATE_ACCOUNT_PROFILE_IMAGE: `INSERT INTO profile_image(user_id,link,s3_key) 
+  GET_ACCOUNT_PROFILE_IMAGE: `SELECT link,s3_key FROM profile_image WHERE user_id =$1`,
+  CREATE_ACCOUNT_PROFILE_IMAGE: `INSERT INTO profile_image(user_id,link,s3_key) 
    VALUES($1,$2,$3)`,
-   UPDATE_ACCOUNT_PROFILE_IMAGE:`UPDATE  profile_image SET link=$1,s3_key=$2 WHERE user_id =$3`,
-   //                                       ACCOUNT RECOVERY
-   UPDATE_PASSWORD_VERIFICATION_TOKEN:`UPDATE account SET reset_password_token = $1
+  UPDATE_ACCOUNT_PROFILE_IMAGE: `UPDATE  profile_image SET link=$1,s3_key=$2 WHERE user_id =$3`,
+  //                                       ACCOUNT RECOVERY
+  UPDATE_PASSWORD_VERIFICATION_TOKEN: `UPDATE account SET reset_password_token = $1
    ,reset_password_expires =  (to_timestamp($2/ 1000.0))  WHERE user_id=$3`,
-   CHECH_TOKENT_IS_FIND : `SELECT reset_password_expires FROM account where reset_password_token = $1`,
-   RESET_ACCOUNT_PASSWORD: `UPDATE account SET password = $1 , reset_password_token= null ,reset_password_expires =null WHERE reset_password_token=$2`,
-   
-   //                                          FOLDER
+  CHECH_TOKENT_IS_FIND: `SELECT reset_password_expires FROM account where reset_password_token = $1`,
+  RESET_ACCOUNT_PASSWORD: `UPDATE account SET password = $1 , reset_password_token= null ,reset_password_expires =null WHERE reset_password_token=$2`,
+
+  //                                          FOLDER
   GET_ALL_FOLDERS: `SELECT folder_id,name,created_at FROM folder where user_id=$1 
-  order by  created_at DESC LIMIT $2 OFFSET $3`,
+  order by  created_at DESC`,
   CREATE_FOLDER: `INSERT INTO folder (user_id, name, created_at) VALUES($1, $2,CURRENT_TIMESTAMP)
   RETURNING  folder_id,name,created_at;`,
-  GET_FOLDERS_COUNT: `SELECT COUNT(*) FROM folder WHERE user_id=$1`,
   UPDATE_FOLDER_NAME: `UPDATE folder SET name = $1 WHERE folder_id=$2`,
   DELETE_ONE_FOLDER: `DELETE FROM folder WHERE folder_id = $1`,
   //                                           FILE
@@ -58,10 +57,10 @@ exports.queryList = {
   order by  created_at DESC LIMIT $1 OFFSET $2`,
   GET_ADMINS_COUNT: `SELECT COUNT(*) FROM account WHERE role= 'admin'`,
   //                                          CLIENT
-  GET_ALL_CLIENTS: `SELECT user_id,first_name,last_name,email,phone_number FROM account where role = 'client' 
-  order by  created_at DESC LIMIT $1 OFFSET $2`,
+  GET_ALL_CLIENTS: `SELECT account.user_id,first_name,last_name,email,phone_number,total,total_done FROM account INNER JOIN client_tasks_state ON client_tasks_state.user_id =account.user_id
+   WHERE role='client' order by  created_at DESC LIMIT $1 OFFSET $2`,
   GET_CLIENTS_COUNT: `SELECT COUNT(*) FROM account WHERE role= 'client'`,
-  GET_ONE_CLIENT_BY_ID:`SELECT user_id,first_name,last_name,email,phone_number FROM account where user_id = $1 AND role = 'client' `,
+  GET_ONE_CLIENT_BY_ID: `SELECT user_id,first_name,last_name,email,phone_number FROM account where user_id = $1 AND role = 'client' `,
   UPDATE_CLIENT_DATA: (id, table, cols) => {
     let query = ["UPDATE " + table];
     query.push("SET");
@@ -70,7 +69,43 @@ exports.queryList = {
       set.push(key + " = ($" + (i + 1) + ")");
     });
     query.push(set.join(", "));
-    query.push("WHERE user_id = " + id +" AND role = 'client'");
+    query.push("WHERE user_id = " + id + " AND role = 'client'");
     return query.join(" ");
   },
+  //                                          AdminProject
+  CREATE_PROJECT: `INSERT INTO PROJECT (user_id, name, type, budget, start_date, time_line, street_address, city, state_address, zip, created_at) 
+  VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, CURRENT_TIMESTAMP)
+  RETURNING  pr_id, name;`,
+  GET_USER_ID_USING_PROJECT_ID: `SELECT user_id FROM project WHERE pr_id=$1`,
+  // GET_PROJECT_COUNT: `SELECT COUNT(*) FROM folder WHERE user_id=$1`,
+  GET_ALL_PROJECTS: `SELECT pr_id,name FROM project WHERE user_id=$1`,
+  DELETE_ONE_PROJECT: `DELETE FROM project WHERE pr_id = $1`,
+  //                                           CLIENT_TASKS_STATE
+  CREATE_TASKS_STATE_REPOSITORY: `INSERT INTO  client_tasks_state(user_id ,total ,total_done)
+  VALUES($1,0,0);`,
+  INCREMENT_REPOSITORY_TOTAL_TASKS: ` UPDATE client_tasks_state SET total = total + 1
+  WHERE user_id = $1;`,
+  DECREMENT_REPOSITORY_TOTAL_TASKS: ` UPDATE client_tasks_state SET total = total - 1
+  WHERE user_id = $1;`,
+  INCREMENT_REPOSITORY_TOTAL_TASKS_DONE: ` UPDATE client_tasks_state SET total_done = total_done + 1
+  WHERE user_id = $1;`,
+  DECREMENT_REPOSITORY_TOTAL_TASKS_DONE: ` UPDATE client_tasks_state SET total_done = total_done - 1
+  WHERE user_id = $1;`,
+  // for deleted
+  DECREMENT_REPOSITORY_TOTAL_TASKS_FOR_DELETE: ` UPDATE client_tasks_state SET total = total - $1
+  WHERE user_id = $2;`,
+  DECREMENT_REPOSITORY_TOTAL_TASKS_DONE_FOR_DELETE: ` UPDATE client_tasks_state SET total_done = total_done - $1
+  WHERE user_id = $2;`,
+  //                                      TASK
+  CREATE_TASK: `INSERT INTO task (pr_id, name, description, done, created_at)
+  VALUES($1, $2,$3,false,CURRENT_TIMESTAMP) RETURNING ts_id,done;`,
+  GET_ALL_TASKS: `SELECT ts_id, name, description,done FROM task  WHERE pr_id=$1
+  order by  created_at DESC;`,
+  GET_ALL_TASKS_DONE_COUNT: `SELECT COUNT(*) FROM task  WHERE pr_id=$1 AND done=true`,
+  GET_ALL_TASKS_COUNT: `SELECT COUNT(*) FROM task  WHERE pr_id=$1 `,
+  UPDATE_TASK_STAT: `UPDATE task SET done = $1 WHERE ts_id=$2`,
+  GET_USER_ID_USING_TASK_ID: `SELECT project.user_id FROM task 
+  INNER JOIN project ON task.pr_id=project.pr_id  WHERE ts_id=$1;`,
+  DELETE_TASK: ` DELETE from task where ts_id=$1 RETURNING done;`,
+  DELETE_TASKS: `DELETE from task where pr_id=$1 ;`,
 };

@@ -5,6 +5,8 @@ const isAdmin = require("../middleware/isAdmin");
 const adminController = require("../controllers/admin");
 const folderController =require( "../controllers/folder");
 const fileController =require( "../controllers/file");
+const projectContoller = require("../controllers/project");
+const taskController = require("../controllers/task");
 
 
 
@@ -27,5 +29,13 @@ router.get("/client/file/:folderId", [auth, isAdmin],  fileController.getAll); /
 router.post("/client/file/:folderId",  [auth, isAdmin], upload.single("file"), fileController.create);
 router.patch("/client/file/:fileId", [auth, isAdmin], fileController.update);
 
-
+// project
+router.get("/client/project/:clientId", [auth, isAdmin], projectContoller.getAll);
+router.post("/client/project/:clientId", [auth, isAdmin], projectContoller.create);
+router.delete("/client/project/:projectId",[auth, isAdmin], projectContoller.delete);
+// task
+ router.get("/client/task/:projectId", [auth, isAdmin], taskController.getAll);
+ router.post("/client/task/:projectId", [auth, isAdmin], taskController.create);
+router.patch("/client/task/:taskId", [auth, isAdmin], taskController.update);
+router.delete("/client/task/:taskId", [auth, isAdmin], taskController.delete);
 module.exports = router;

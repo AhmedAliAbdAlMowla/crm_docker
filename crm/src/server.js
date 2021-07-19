@@ -1,6 +1,5 @@
 "use strict"
 if (process.env.NODE_ENV.trim() === "development")
-
   require("dotenv/config");
 const http = require("http");
 const app = require("./app/app");

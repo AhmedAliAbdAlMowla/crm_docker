@@ -36,13 +36,16 @@ exports.getAllClient = async (req, res) => {
   const pageNumber = parseInt(req.query.pageNumber, 10);
   const pageSize = parseInt(req.query.pageSize, 10);
 
+  
   let total = await dbConnection.query(sqlQuery.GET_CLIENTS_COUNT);
   total = total.rows[0].count;
 
-  const clients = await dbConnection.query(sqlQuery.GET_ALL_CLIENTS, [
+  let clients = await dbConnection.query(sqlQuery.GET_ALL_CLIENTS, [
     pageSize,
     (pageNumber - 1) * pageSize,
   ]);
+
+
 
   res.status(200).json({
     total: parseInt(total, 10),

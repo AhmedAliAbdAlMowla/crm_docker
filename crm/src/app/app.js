@@ -25,10 +25,11 @@ require("./startup/loger")();
 // Routes
 require("./startup/routes")(app);
 
-// db config
 
-require("../../dbConfigSchema")();
-
+// app.get("/", async (req, res) => {
+//   const result = await dbConnection.query("SELECT * FROM account", "");
+//   res.status(200).json(result.rows);
+// });
 
 
 

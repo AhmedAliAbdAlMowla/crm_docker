@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 const s3Service = require("../services/s3");
 const validator = require("../utils/validator/folder");
 const dbConnection = require("../db/connection");
@@ -17,24 +17,13 @@ const sqlQuery = require("../db/queries").queryList;
  * @Query_Params pageNumber , pageSize
  */
 exports.getAll = async (req, res) => {
-  // pagination element
-  const pageNumber = parseInt(req.query.pageNumber, 10);
-  const pageSize = parseInt(req.query.pageSize, 10);
   const userId = req.params.clientId ? req.params.clientId : req.user.id;
-
-  let total = await dbConnection.query(sqlQuery.GET_FOLDERS_COUNT, [userId]);
-  total = total.rows[0].count;
-
-  let folders = await dbConnection.query(sqlQuery.GET_ALL_FOLDERS, [
-    userId,
-    pageSize,
-    (pageNumber - 1) * pageSize,
-  ]);
+  let folders = await dbConnection.query(sqlQuery.GET_ALL_FOLDERS, [userId]);
 
   folders = folders.rows;
 
   res.status(200).json({
-    total: parseInt(total, 10),
+    total: folders.length,
     folders,
   });
 };
@@ -112,7 +101,6 @@ exports.update = async (req, res) => {
  *
  */
 exports.delete = async (req, res) => {
- 
   let files = await dbConnection.query(sqlQuery.GET_MANY_FILE, [
     req.params.folderId,
   ]);

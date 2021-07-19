@@ -58,7 +58,7 @@ exports.signup = async (req, res) => {
   const { error } = signupValidator(req.body);
 
   if (error) return res.status(400).json({ message: error.details[0].message });
-  
+
   const email_exist = await dbConnection.query(sqlQuery.CHECK_EMAIL_IS_EXIST, [
     req.body.email,
   ]);
@@ -75,8 +75,14 @@ exports.signup = async (req, res) => {
     req.body.email,
     req.body.phoneNumber,
   ];
-  // console.log(accountData);
-  await dbConnection.query(sqlQuery.CREATE_ACCOUNT, accountData);
+  //  create account
+  let result = await dbConnection.query(sqlQuery.CREATE_ACCOUNT, accountData);
+  result = result.rows[0];
+  // create client_tasks_state_repositry
+  await dbConnection.query(sqlQuery.CREATE_TASKS_STATE_REPOSITORY, [
+    result.user_id,
+  ]);
+
   res.status(201).json({
     message: "Account created.",
   });
@@ -139,9 +145,7 @@ exports.updatePassword = async (req, res) => {
   // validate newPassword
   const { error } = updateValidator({ password: req.body.newPassword });
 
-  if (error) 
-    return res.status(400).json({ message: error.details[0].message });
-  
+  if (error) return res.status(400).json({ message: error.details[0].message });
 
   let user = await dbConnection.query(sqlQuery.GET_ACCOUNT_PASSWORD, [
     req.user.id,
@@ -236,7 +240,6 @@ exports.recover = async (req, res) => {
     req.body.email,
   ]);
 
- 
   if (!user.rows.length)
     return res.status(401).json({
       message:
@@ -249,10 +252,12 @@ exports.recover = async (req, res) => {
   const resetPasswordToken = crypto.randomBytes(3).toString("hex");
   let resetPasswordExpires = Date.now() + 1200000; //expires in an 20 minutes
 
-   await dbConnection.query(
-    sqlQuery.UPDATE_PASSWORD_VERIFICATION_TOKEN,
-    [resetPasswordToken, resetPasswordExpires, user.rows[0].user_id]);
-    
+  await dbConnection.query(sqlQuery.UPDATE_PASSWORD_VERIFICATION_TOKEN, [
+    resetPasswordToken,
+    resetPasswordExpires,
+    user.rows[0].user_id,
+  ]);
+
   //  Send mail
 
   const emailText = "The password reset code is : " + resetPasswordToken;
@@ -268,18 +273,19 @@ exports.recover = async (req, res) => {
  * @access  Public
  */
 exports.checkToken = async (req, res) => {
-
-  const user = await dbConnection.query(sqlQuery.CHECH_TOKENT_IS_FIND,[req.body.token]);
+  const user = await dbConnection.query(sqlQuery.CHECH_TOKENT_IS_FIND, [
+    req.body.token,
+  ]);
 
   if (!user.rows.length)
     return res
       .status(401)
       .json({ message: "Password reset token is invalid or has expired." });
 
-  const resetPasswordExpires = (user.rows[0].reset_password_expires).getTime() ;
-  
-  if((resetPasswordExpires) < Date.now())
-      return res
+  const resetPasswordExpires = user.rows[0].reset_password_expires.getTime();
+
+  if (resetPasswordExpires < Date.now())
+    return res
       .status(401)
       .json({ message: "Password reset token has expired." });
 
@@ -294,33 +300,31 @@ exports.resetPassword = async (req, res) => {
   // validate newPassword
   const { error } = updateValidator({ password: req.body.password });
 
-  if (error) 
-    return res.status(400).json({ message: error.details[0].message });
-  
+  if (error) return res.status(400).json({ message: error.details[0].message });
 
-    const user = await dbConnection.query(sqlQuery.CHECH_TOKENT_IS_FIND,[req.body.token]);
+  const user = await dbConnection.query(sqlQuery.CHECH_TOKENT_IS_FIND, [
+    req.body.token,
+  ]);
 
-    if (!user.rows.length)
-      return res
-        .status(401)
-        .json({ message: "Password reset token is invalid or has expired." });
-  
-    const resetPasswordExpires = (user.rows[0].reset_password_expires).getTime() ;
-    
-    if((resetPasswordExpires) < Date.now())
-        return res
-        .status(401)
-        .json({ message: "Password reset token has expired." });
-  
+  if (!user.rows.length)
+    return res
+      .status(401)
+      .json({ message: "Password reset token is invalid or has expired." });
 
-        const salt = await bcrypt.genSalt(10);
-        req.body.password = await bcrypt.hash(req.body.password, salt);
+  const resetPasswordExpires = user.rows[0].reset_password_expires.getTime();
 
-       await dbConnection.query(sqlQuery.RESET_ACCOUNT_PASSWORD, [
-          req.body.password, 
-          req.body.token
-        ]);
+  if (resetPasswordExpires < Date.now())
+    return res
+      .status(401)
+      .json({ message: "Password reset token has expired." });
 
+  const salt = await bcrypt.genSalt(10);
+  req.body.password = await bcrypt.hash(req.body.password, salt);
+
+  await dbConnection.query(sqlQuery.RESET_ACCOUNT_PASSWORD, [
+    req.body.password,
+    req.body.token,
+  ]);
 
   res.status(200).json({ message: "Your password has been updated." });
 };

@@ -40,8 +40,8 @@
       "description":"Everything about  Project"
     },
     {
-      "name": "Milestone",
-      "description":"Everything about  Milestone"
+      "name": "task",
+      "description":"Everything about  task"
     },
     {
       "name": "Folder",
@@ -56,8 +56,8 @@
       "description":"Everything about  Admin-client-project"
     },
     {
-      "name": "Admin-client-milestone",
-      "description":"Everything about  Admin-client-milestone"
+      "name": "Admin-client-task",
+      "description":"Everything about  Admin-client-task"
     },
     {
       "name": "Admin-client-folder",
@@ -111,12 +111,12 @@
                         "firstName": "roman",
                         "lastName": "protoqit",
                         "email": "roman@protoqit.com",
-                        "phoneNumber": "+1235665689566",
-                        "password": "#Secret123"
+                        "password": "#Secret123",
+                        "phoneNumber": "+1235665689566"
         
                       }
                     },
-                    "example": "{\r\n\r\n    \"firstName\":\"roman\",\r\n    \"lastName\":\"protoqit\",\r\n    \"email\":\"roman@protoqit.com\",\r\n   \n    \"password\":\"#Secret123\"\r\n\r\n}"
+                    "example": "{\r\n\r\n    \"firstName\":\"roman\",\r\n    \"lastName\":\"protoqit\",\r\n    \"email\":\"roman@protoqit.com\",\r\n   \n    \"password\":\"#Secret123\",\r\n  \"phoneNumber\": \"+1235665689566\"\r\n}"
                   }
                 }
               },
@@ -465,20 +465,7 @@
               "summary": "get client all folder",
               "operationId": "getclientallfolder",
               "parameters": [
-                {
-                  "name": "pageNumber",
-                  "in": "query",
-                  "required": true,
-                  "style": "form",
-                  "schema": { "type": "number" }
-                },
-                {
-                  "name": "pageSize",
-                  "in": "query",
-                  "required": true,
-                  "style": "form",
-                  "schema": { "type": "number" }
-                },
+          
                 {
                   "name": "clientId",
                   "in": "path",
@@ -552,20 +539,7 @@
               "summary": "getAll",
               "operationId": "getAll",
               "parameters": [
-                {
-                  "name": "pageNumber",
-                  "in": "query",
-                  "required": true,
-                  "style": "form",
-                  "schema": { "type": "number" }
-                },
-                {
-                  "name": "pageSize",
-                  "in": "query",
-                  "required": true,
-                  "style": "form",
-                  "schema": { "type": "number" }
-                },
+                
                 {
                   "name": "clientId",
                   "in": "path",
@@ -598,13 +572,17 @@
                       "type": "object",
                       "example": {
                         "name": "tow",
+                        "type":"INTD",
+                        "budget":"5000",
+                        "startDate":"2021-07-11",
+                        "timeLine":"3",
                         "streetAddress": "newstrr",
                         "city": "corfalsona",
                         "state": "cal",
                         "zip": "122354"
                       }
                     },
-                    "example": "{\r\n    \"name\": \"tow\",\r\n     \"streetAddress\":\"newstrr\",\r\n    \"city\": \"corfalsona\",\r\n    \"state\":\"cal\",\r\n    \"zip\": \"122354\"\r\n}"
+                    "example": "{\r\n    \"name\": \"tow\",\r\n    \"type\": \"INTD\",\r\n    \"budget\" : \"5000\" ,\r\n  \"startDate\":\"2021-07-11\",\r\n  \"timeLine\":\"3\",\r\n    \"streetAddress\":\"newstrr\",\r\n    \"city\": \"corfalsona\",\r\n    \"state\":\"cal\",\r\n    \"zip\": \"122354\"\r\n}"
                   }
                 }
               },
@@ -628,26 +606,12 @@
               "tags": ["Admin-client-project"]
             }
           },
-          "/admin/client/milestone/{projectId}": {
+          "/admin/client/task/{projectId}": {
             "get": {
               "summary": "getAll",
               "operationId": "getAll0",
               "parameters": [
-                {
-                  "name": "pageNumber",
-                  "in": "query",
-                  "required": true,
-                  "style": "form",
-                  "schema": { "type": "number" }
-                },
-                {
-                  "name": "pageSize",
-                  "in": "query",
-                  "required": true,
-                  "style": "form",
-                  "schema": { "type": "number" }
-                },
-
+                
                 {
                   "name": "projectId",
                   "in": "path",
@@ -657,7 +621,7 @@
                 }
               ],
               "responses": { "200": { "description": "", "headers": {} } },
-              "tags": ["Admin-client-milestone"]
+              "tags": ["Admin-client-task"]
             },
             "post": {
               "summary": "create",
@@ -684,16 +648,16 @@
                   }
                 }
               },
-              "tags": ["Admin-client-milestone"]
+              "tags": ["Admin-client-task"]
             }
           },
-          "/admin/client/milestone/{milestoneId}": {
+          "/admin/client/task/{taskId}": {
             "patch": {
               "summary": "update",
               "operationId": "update2",
               "parameters": [
                 {
-                  "name": "milestoneId",
+                  "name": "taskId",
                   "in": "path",
                   "required": true,
                   "style": "form",
@@ -705,19 +669,19 @@
                 "required": true,
                 "content": {
                   "application/json": {
-                    "schema": { "type": "object", "example": { "status": "1" } },
-                    "example": "{\r\n    \"status\":\"1\"\r\n}"
+                    "schema": { "type": "object", "example": { "status": "true" } },
+                    "example": "{\r\n    \"status\":\"true\"\r\n}"
                   }
                 }
               },
-              "tags": ["Admin-client-milestone"]
+              "tags": ["Admin-client-task"]
             },
             "delete": {
-              "summary": "admin-client-delete-milestone",
-              "operationId": "admin-client-delete-milestone",
+              "summary": "admin-client-delete-task",
+              "operationId": "admin-client-delete-task",
               "parameters": [
                 {
-                  "name": "milestoneId",
+                  "name": "taskId",
                   "in": "path",
                   "required": true,
                   "style": "form",
@@ -725,7 +689,7 @@
                 }
               ],
               "responses": { "200": { "description": "", "headers": {} } },
-              "tags": ["Admin-client-milestone"]
+              "tags": ["Admin-client-task"]
             }
           },
 
@@ -1058,7 +1022,7 @@
               "tags": ["Project"]
             }
           },
-          "/client/milestone/{projectID}": {
+          "/client/task/{projectID}": {
             "get": {
               "summary": "getAll",
               "operationId": "getAll0",
@@ -1087,7 +1051,7 @@
                 }
               ],
               "responses": { "200": { "description": "", "headers": {} } },
-              "tags": ["Milestone"]
+              "tags": ["task"]
             }
           }
   },

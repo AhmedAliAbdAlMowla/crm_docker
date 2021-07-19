@@ -23,6 +23,7 @@ module.exports.getAll = async (req, res, next) => {
     pageSize,
     (pageNumber - 1) * pageSize,
   ]);
+ 
   files = files.rows;
 
   res.status(200).json({

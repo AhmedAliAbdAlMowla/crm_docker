@@ -4,12 +4,13 @@
   "description": "crm is client management system project",
   "main": "app.js",
   "scripts": {
-    "start:dev": " nodemon",
-    "start:prod": "node src/server.js",
+    "start:dev": " set NODE_ENV=development&& nodemon",
+    "start:prod": " set NODE_ENV=production&& node src/server.js",
     "start": "npm run start:prod"
   },
   "repository": {
-  
+    "type": "git",
+    "url": "git+https://github.com/AhmedAliAbdAlMowla/crm.git"
   },
   "keywords": [
     "node",
