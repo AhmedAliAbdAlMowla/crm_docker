@@ -17,7 +17,10 @@
   ],
   "author": "ENG/ Ahmed Ali Ahmed",
   "license": "MIT",
- 
+  "bugs": {
+    "url": "https://github.com/AhmedAliAbdAlMowla/crm/issues"
+  },
+  "homepage": "https://github.com/AhmedAliAbdAlMowla/crm#readme",
   "dependencies": {
     "aws-sdk": "^2.909.0",
     "bcrypt": "^5.0.1",
