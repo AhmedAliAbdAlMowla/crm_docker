@@ -38,11 +38,45 @@ module.exports = async () => {
             link varchar(200) NOT NULL,
             s3_key varchar(50) NOT NULL
             )`,
+
+    `CREATE TABLE project(
+              pr_id SERIAL PRIMARY KEY,
+              user_id INTEGER REFERENCES account(user_id),
+              name VARCHAR(60) NOT NULL,
+              type VARCHAR(12) NOT NULL,
+              budget INTEGER Not Null,
+              start_date DATE NOT NULL DEFAULT CURRENT_DATE,
+              time_line INTEGER Not NULL,
+              street_address VARCHAR(60),
+              city VARCHAR(40),
+              state_address VARCHAR(20),
+              zip VARCHAR(10),
+              created_at TIMESTAMP 
+              )`,
+    `
+              CREATE TABLE task(
+                ts_id SERIAL PRIMARY KEY,
+                pr_id INTEGER REFERENCES project(pr_id),
+                name VARCHAR(60) NOT NULL,
+                description VARCHAR(1024) NOT NULL,
+                done BOOLEAN NOT NULL,
+                created_at TIMESTAMP 
+                )`,
+    `
+                CREATE TABLE client_tasks_state(
+                  id SERIAL PRIMARY KEY,
+                  user_id INTEGER REFERENCES account(user_id),
+                  total INTEGER NOT NULL,
+                  total_done INTEGER NOT NULL
+                  )
+                `,
   ];
 
+  const query = [
+   ` UPDATE account SET role = 'admin' WHERE user_id=1`
+  ]
   for (let i of tables) {
-    
-     const result = await dbConnection.query(i);
+    const result = await dbConnection.query(i);
     // console.log(i);
   }
 };

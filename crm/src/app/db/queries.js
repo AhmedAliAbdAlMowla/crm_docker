@@ -103,9 +103,10 @@ exports.queryList = {
   order by  created_at DESC;`,
   GET_ALL_TASKS_DONE_COUNT: `SELECT COUNT(*) FROM task  WHERE pr_id=$1 AND done=true`,
   GET_ALL_TASKS_COUNT: `SELECT COUNT(*) FROM task  WHERE pr_id=$1 `,
-  UPDATE_TASK_STAT: `UPDATE task SET done = $1 WHERE ts_id=$2`,
+  UPDATE_TASK_STAT: `UPDATE task SET done = $1 WHERE ts_id=$2 RETURNING name;`,
   GET_USER_ID_USING_TASK_ID: `SELECT project.user_id FROM task 
   INNER JOIN project ON task.pr_id=project.pr_id  WHERE ts_id=$1;`,
   DELETE_TASK: ` DELETE from task where ts_id=$1 RETURNING done;`,
   DELETE_TASKS: `DELETE from task where pr_id=$1 ;`,
+  GET_FIRST_NAME_AND_EMAIL_BY_ID: `SELECT email FROM account WHERE user_id=$1;`
 };
