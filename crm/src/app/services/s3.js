@@ -61,6 +61,7 @@ module.exports.deleteOne = async (file) => {
  * @param     files => [{ s3_key}]
  */
 module.exports.deleteManyFiles = async (files) => {
+  if (!files.length) return;
   let objects = [];
   for (let k in files) {
     objects.push({ Key: files[k].s3_key });

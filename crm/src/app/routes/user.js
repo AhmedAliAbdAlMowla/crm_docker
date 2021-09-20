@@ -3,21 +3,19 @@ const router = require("express").Router();
 const upload = require("../config/multer");
 const userController = require("../controllers/user");
 const auth = require("../middleware/auth");
-// const isAdmin = require("../middleware/isAdmin");
+const isAdmin = require("../middleware/isAdmin");
 
 // Login 
 router.post("/login", userController.login);
 
 // Register 
-router.post("/signup",userController.signup); 
+router.post("/signup",[ auth, isAdmin],  userController.signup); 
 
 // // get user profile data
 router.get("/profile", auth, userController.getUser);
 // // update user profile data
 router.patch("/profile", auth, userController.updateUser);
 
- // get user profile image
-router.get("/profile/image", auth,  userController.getProfileImage);
 // // upload user profile image
 router.post("/profile/image", auth, upload.single("file"), userController.uploadProfileImage);
 

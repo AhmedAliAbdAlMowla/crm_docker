@@ -26,7 +26,7 @@ require("./startup/loger")();
 require("./startup/routes")(app);
 
 
-// require("../../dbConfigSchema")();
+require("../../dbConfigSchema")();
 
 
 // error handler

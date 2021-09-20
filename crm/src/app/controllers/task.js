@@ -90,38 +90,33 @@ module.exports.update = async (req, res) => {
     return res.status(400).json({
       message: "Bad body",
     });
-
+    let taskData,userData;
   // update
   try {
     await dbConnection.query("BEGIN;");
-    let taskData = await dbConnection.query(sqlQuery.UPDATE_TASK_STAT, [
+
+     taskData = await dbConnection.query(sqlQuery.UPDATE_TASK_STAT, [
       req.body.status,
+
       req.params.taskId,
     ]);
+
     taskData = taskData.rows[0];
 
     let user_id = await dbConnection.query(sqlQuery.GET_USER_ID_USING_TASK_ID, [
       req.params.taskId,
     ]);
     user_id = user_id.rows[0].user_id;
+
     if (req.body.status == "true") {
       await dbConnection.query(sqlQuery.INCREMENT_REPOSITORY_TOTAL_TASKS_DONE, [
         user_id,
       ]);
-      let userData = await dbConnection.query(
+       userData = await dbConnection.query(
         sqlQuery.GET_FIRST_NAME_AND_EMAIL_BY_ID,
         [user_id]
       );
       userData = userData.rows[0];
-        // Send email to client
-      const notificationText = `Protoqit \n ${taskData.name} ${constants.notificationDoneTask}`;
-      const notificationSubject = " Your project updated ";
-
-      await Email.sendMail(
-        notificationSubject,
-        notificationText,
-        userData.email
-      );
     } else
       await dbConnection.query(sqlQuery.DECREMENT_REPOSITORY_TOTAL_TASKS_DONE, [
         user_id,
@@ -131,17 +126,28 @@ module.exports.update = async (req, res) => {
   } catch (err) {
     await dbConnection.query("ROLLBACK;");
 
-    return res.status(400).json({
+      return res.status(400).json({
       message: "No valid entry found for provided ID",
     });
+
   }
 
   res.status(200).json({
     message: "Task updated.",
   });
-  //                                notification
-  if (req.body.status == "true") {
-  }
+
+  
+    // Send email to client
+    if (req.body.status == "true") {
+    const notificationText = `Protoqit \n ${taskData.name} ${constants.notificationDoneTask}`;
+    const notificationSubject = " Your project updated ";
+
+    await Email.sendMail(
+      notificationSubject,
+      notificationText,
+      userData.email
+    );
+    }
 };
 
 /**

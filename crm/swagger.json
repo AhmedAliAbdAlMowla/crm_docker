@@ -7,7 +7,7 @@
       "variables": {}
     },
     {
-      "url": "http://13.126.233.224/api/v1/",
+      "url": "http://15.185.46.240/api/v1/",
       "description": "Production server (uses live data)",
       "variables": {},
       "basePath": ""
@@ -66,6 +66,10 @@
     {
       "name": "Admin-client-file",
       "description":"Everything about  Admin-client-folder"
+    },
+    {
+      "name": "Admin-client-working-period",
+      "description":"Everything about  Admin-client-working-period"
     }
   ],
   "paths": {
@@ -181,14 +185,8 @@
                 }
               },
               "tags": ["User"]
-            },
-            "get": {
-              "summary": "get user profile image link",
-              "description": "you can use this end point to  get user profile image link",
-              "operationId": "get user profile image",
-              "responses": { "200": { "description": "", "headers": {} } },
-              "tags": ["User"]
             }
+           
           },
           "/users/account/password": {
             "patch": {
@@ -695,6 +693,71 @@
 
 
 
+"/admin/client/period/{projectId}": {
+  "get": {
+    "summary": "getAll",
+    "operationId": "getAll0",
+    "parameters": [
+      
+      {
+        "name": "projectId",
+        "in": "path",
+        "required": true,
+        "style": "form",
+        "schema": { "type": "string" }
+      }
+    ],
+    "responses": { "200": { "description": "", "headers": {} } },
+    "tags": ["Admin-client-working-period"]
+  },
+  "post": {
+    "summary": "create",
+    "operationId": "create1",
+    "parameters": [
+      {
+        "name": "projectId",
+        "in": "path",
+        "required": true,
+        "style": "form",
+        "schema": { "type": "string" }
+      }
+    ],
+    "responses": { "200": { "description": "", "headers": {} } },
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "example": { "date": "29/08/2021", "hours": "1.5","description":"pla pla" }
+          },
+          "example": "{\r\n    \"date\":\"29/08/2021\",\r\n  \"hours\":\"1.5\",\r\n  \"description\":\"work in user task\"\r\n}"
+        }
+      }
+    },
+    "tags": ["Admin-client-working-period"]
+  }
+},
+"/admin/client/period/{periodId}": {
+  "delete": {
+    "summary": "Admin-client-working-period",
+    "operationId": "Admin-client-working-period",
+    "parameters": [
+      {
+        "name": "periodId",
+        "in": "path",
+        "required": true,
+        "style": "form",
+        "schema": { "type": "string" }
+      }
+    ],
+    "responses": { "200": { "description": "", "headers": {} } },
+    "tags": ["Admin-client-working-period"]
+  }
+},
+
+
+
   
 
 
@@ -808,22 +871,7 @@
             "get": {
               "summary": "get all folders",
               "operationId": "getallfolders",
-              "parameters": [
-                {
-                  "name": "pageNumber",
-                  "in": "query",
-                  "required": true,
-                  "style": "form",
-                  "schema": { "type": "number" }
-                },
-                {
-                  "name": "pageSize",
-                  "in": "query",
-                  "required": true,
-                  "style": "form",
-                  "schema": { "type": "number" }
-                }
-              ],
+             
               "responses": { "200": { "description": "", "headers": {} } },
               "tags": ["Folder"]
             },

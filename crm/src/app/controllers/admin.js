@@ -44,9 +44,7 @@ exports.getAllClient = async (req, res) => {
     pageSize,
     (pageNumber - 1) * pageSize,
   ]);
-
-
-
+  
   res.status(200).json({
     total: parseInt(total, 10),
     clients: clients.rows,

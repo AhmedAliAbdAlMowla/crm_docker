@@ -7,7 +7,7 @@ const folderController =require( "../controllers/folder");
 const fileController =require( "../controllers/file");
 const projectContoller = require("../controllers/project");
 const taskController = require("../controllers/task");
-
+const periodController = require("../controllers/period");
 
 
 
@@ -34,8 +34,12 @@ router.get("/client/project/:clientId", [auth, isAdmin], projectContoller.getAll
 router.post("/client/project/:clientId", [auth, isAdmin], projectContoller.create);
 router.delete("/client/project/:projectId",[auth, isAdmin], projectContoller.delete);
 // task
- router.get("/client/task/:projectId", [auth, isAdmin], taskController.getAll);
- router.post("/client/task/:projectId", [auth, isAdmin], taskController.create);
+router.get("/client/task/:projectId", [auth, isAdmin], taskController.getAll);
+router.post("/client/task/:projectId", [auth, isAdmin], taskController.create);
 router.patch("/client/task/:taskId", [auth, isAdmin], taskController.update);
 router.delete("/client/task/:taskId", [auth, isAdmin], taskController.delete);
+// project working period
+router.get("/client/period/:projectId", [auth, isAdmin], periodController.getAll);
+router.post("/client/period/:projectId", [auth, isAdmin], periodController.create);
+router.delete("/client/period/:periodId", [auth, isAdmin], periodController.delete);
 module.exports = router;

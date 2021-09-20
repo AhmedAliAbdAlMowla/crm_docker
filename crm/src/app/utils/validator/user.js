@@ -70,10 +70,6 @@ module.exports.updateValidator = (user) => {
         "string.pattern.base": "password must have at least 1 uppercase lowercase special character and number"
       }),
     phoneNumber: Joi.string().min(4),
-    notificationOption:Joi.object({
-      email: Joi.boolean().required(),
-      sms:Joi.boolean().required()
-    })
     
   });
 

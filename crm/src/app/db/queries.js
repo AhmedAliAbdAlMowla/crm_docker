@@ -8,7 +8,8 @@ exports.queryList = {
   VALUES($1,$2,$3,$4,$5,'client',CURRENT_TIMESTAMP) RETURNING user_id;`,
   CHECK_EMAIL_IS_EXIST: `SELECT COUNT(*) FROM account WHERE email = $1`,
   GET_DATA_FOR_LOGIN: `SELECT user_id,first_name,last_name,role,password FROM account WHERE email = $1`,
-  GET_ACCOUNT_DATA: `SELECT user_id,first_name,last_name,role FROM account WHERE user_id = $1`,
+  GET_ACCOUNT_DATA: `SELECT account.user_id,account.first_name,account.last_name,account.email,account.phone_number,account.role,profile_image.link as image_link FROM account 
+  inner JOIN profile_image ON account.user_id=profile_image.user_id WHERE account.user_id= $1`,
   GET_ACCOUNT_PASSWORD: `SELECT password FROM account WHERE user_id= $1`,
   UPDATE_ACCOUNT_PASSWORD: `UPDATE account SET password = $1  WHERE user_id=$2`,
 
@@ -20,7 +21,7 @@ exports.queryList = {
       set.push(key + " = ($" + (i + 1) + ")");
     });
     query.push(set.join(", "));
-    query.push("WHERE user_id = " + id);
+    query.push(`WHERE user_id='${id}'`);
     return query.join(" ");
   },
   //                                          ACCUNT PROFILE IMAGE
@@ -103,10 +104,33 @@ exports.queryList = {
   order by  created_at DESC;`,
   GET_ALL_TASKS_DONE_COUNT: `SELECT COUNT(*) FROM task  WHERE pr_id=$1 AND done=true`,
   GET_ALL_TASKS_COUNT: `SELECT COUNT(*) FROM task  WHERE pr_id=$1 `,
-  UPDATE_TASK_STAT: `UPDATE task SET done = $1 WHERE ts_id=$2 RETURNING name;`,
+  UPDATE_TASK_STAT: `UPDATE task SET done=$1 WHERE ts_id=$2  RETURNING name;`,
   GET_USER_ID_USING_TASK_ID: `SELECT project.user_id FROM task 
   INNER JOIN project ON task.pr_id=project.pr_id  WHERE ts_id=$1;`,
   DELETE_TASK: ` DELETE from task where ts_id=$1 RETURNING done;`,
   DELETE_TASKS: `DELETE from task where pr_id=$1 ;`,
-  GET_FIRST_NAME_AND_EMAIL_BY_ID: `SELECT email FROM account WHERE user_id=$1;`
+  GET_FIRST_NAME_AND_EMAIL_BY_ID: `SELECT email FROM account WHERE user_id=$1;`,
+  //                           project working hours
+  GET_TOTAL_WORKING_HOURS_FOR_PROJECT: `SELECT COALESCE(SUM(hours),0) as total FROM working_period WHERE pr_id= $1;`,
+  GET_ALL_WORKING_PERIODS_FOR_PROJECT: `SELECT id,TO_CHAR(created_date :: DATE, 'dd/mm/yyyy') as date ,hours,description FROM working_period
+   WHERE pr_id=$1;`,
+   CREATE_WORKING_PERIOD:`INSERT INTO working_period (pr_id,hours,description,created_date,created_at) VALUES(
+    $1,$2,$3,TO_DATE($4, 'DD/MM/YYYY'),CURRENT_TIMESTAMP)`,
+    DELETE_WORKING_PERIOD:`DELETE FROM working_period WHERE id =$1`,
+
+    //                          SuperAdmin
+    GET_ALL_FOLDERS_IDS: `SELECT folder_id FROM folder WHERE user_id=$1`,
+    GET_FILES_S3_KEY:`SELECT s3_key FROM file WHERE folder_id = $1`,
+    DELETE_ALL_FILES_BY_FOLDER_ID:`DELETE FROM file WHERE folder_id = $1`,
+    DELETE_ALL_FOLDERS_BY_USER_ID:`DELETE FROM folder WHERE user_id = $1`,
+    GET_ALL_PROJECTS_IDS: `SELECT pr_id FROM project WHERE user_id=$1`,
+    DELETE_ALL_TASKS_FOR_PROJECT: `DELETE FROM task WHERE pr_id = $1`,
+    DELETE_ALL_PROJECT_WORKING_PERIOD_BY_PROJECT_ID: `DELETE FROM working_period WHERE pr_id = $1`,
+    DELETE_ALL_PROJECTS_BY_USER_ID:`DELETE FROM project WHERE user_id = $1`,
+    DELETE_CLIENT_TASKS_STATE_BY_USER_ID:`DELETE FROM client_tasks_state WHERE user_id = $1`,
+    GET_PROFILE_IMAGE_S3_KEY:`SELECT s3_key FROM profile_image WHERE user_id = $1`,
+    DELETE_PROFILE_IMAGE_BY_USER_ID:`DELETE FROM profile_image WHERE user_id = $1`,
+    DELETE_USER_ACCOUNT_BY_USER_ID:`DELETE FROM account WHERE user_id = $1`,
+    GET_ONE_USER_BY_ID:`SELECT user_id,first_name,last_name,email,phone_number,role FROM account where user_id = $1 `,
 };
+
